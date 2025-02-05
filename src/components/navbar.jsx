@@ -157,9 +157,11 @@ export default function Navbar() {
       </div>
 
       <div className="my-8 ml-8 flex">
-        <div className="w-[30%] bg-yellow-100 pt-8 pl-8">
+        <div className="bg-yellow-100 w-[30%]">
+        <div className="w-[30%]  pt-8 pb-8 pl-8 sticky top-0 h-fit">
               <div className="pb-4">Read It All</div>
               <div className="text-5xl">Health & <br /> Wellness</div>
+        </div>
         </div>
 
         <div className="w-[70%]">
@@ -182,9 +184,11 @@ export default function Navbar() {
       </div>
 
       <div className="my-8 ml-8 flex">
-        <div className="w-[30%] bg-red-300 pt-8 pl-8">
+      <div className="bg-red-300 w-[30%]">
+        <div className="w-[30%] bg-red-300 pt-8 pb-8 pl-8 sticky top-0 h-fit">
               <div className="pb-4">Read It All</div>
               <div className="text-5xl">Fashion & <br /> Beauty</div>
+        </div>
         </div>
 
         <div className="w-[70%]">
@@ -207,9 +211,11 @@ export default function Navbar() {
       </div>
 
       <div className="my-8 ml-8 flex">
-        <div className="w-[30%] bg-blue-100 pt-8 pl-8">
+      <div className="bg-blue-100 w-[30%]">
+        <div className="w-[30%] bg-blue-100 pt-8 pb-8 pl-8 sticky top-0 h-fit">
               <div className="pb-4">Read It All</div>
               <div className="text-5xl">Travel</div>
+        </div>
         </div>
 
         <div className="w-[70%]">
