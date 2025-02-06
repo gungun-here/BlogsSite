@@ -1,16 +1,18 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/navbar";
 import Homepage from "./components/homepage";
+import Signup from "./components/signup";
+import Email from "./components/email";
 
 export default function App(){
 
   return(
     <div>
       <Router>  
-        <div>{<Navbar />}</div>
         <Routes>
           <Route path="/" element={<Homepage />}></Route>
+          <Route path="/signup" element={<Signup />}></Route>
+          <Route path="/email" element={<Email />}></Route>
         </Routes>
       </Router>
     </div>
