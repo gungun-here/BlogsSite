@@ -15,7 +15,8 @@ app.use("/api/auth", authRoutes);
 //app.use('/api/blogs', blogRoutes);
 
 
-mongoose.connect("mongodb://127.0.0.1:27017/users")
+// mongoose.connect("mongodb://127.0.0.1:27017/users")
+mongoose.connect("mongodb+srv://type2gungun:ax05mVQgnAAIQmja@cluster0.eobig.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/users")
     .then(() => console.log("MongoDB connected"))
     .catch(err => console.log(err));
 
