@@ -20,14 +20,17 @@ export default function Signup() {
                 });
     
                 console.log("Server Response:", response.data); // Debugging
-                navigate("/"); // Redirect to dashboard on successful login
+    
+                // Save token in localStorage
+                localStorage.setItem("token", response.data.token);
+    
+                navigate("/dashboard"); // Redirect to dashboard after login
             }
         } catch (error) {
             console.error("Google Login Error:", error.response?.data || error);
         }
     };
     
-
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
             <button onClick={() => navigate("/")} className="fixed top-[4rem] right-[5rem] cursor-pointer">❌</button>

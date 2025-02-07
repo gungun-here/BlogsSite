@@ -1,5 +1,3 @@
-import { AiFillInstagram } from "react-icons/ai";
-import { FaSquareFacebook, FaSquareXTwitter, FaSquarePinterest } from "react-icons/fa6";
 import { GoArrowRight } from "react-icons/go";
 
 export default function Homepage() {
@@ -86,7 +84,7 @@ export default function Homepage() {
   ];
 
   return (
-    <div className="px-15  bg-gradient-to-t from-[rgb(235,234,230)] via-transparent to-transparent">
+    <div className="px-15 bg-gradient-to-t from-[rgb(235,234,230)] via-transparent to-transparent">
 
       <div className="px-8 border-b-2 border-gray-200">
         <div className="flex justify-between items-center py-8">

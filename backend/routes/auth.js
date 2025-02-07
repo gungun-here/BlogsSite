@@ -89,8 +89,7 @@ router.get("/loginemail", verifyToken, async (req, res) => {
 
   })
 
-// Google Login Route
-router.post("/google-login", async (req, res) => {
+  router.post("/google-login", async (req, res) => {
     try {
         const { email, displayName } = req.body;
 
@@ -101,14 +100,17 @@ router.post("/google-login", async (req, res) => {
         let user = await User.findOne({ email });
 
         if (!user) {
-            // Create user without password for Google login
-            user = new User({ email, displayName, password: null });
+            // Create user without a password for Google login
+            user = new User({ email, displayName });
             await user.save();
         }
 
-        res.status(200).json({ message: "User logged in successfully", user });
+        // Generate JWT Token
+        const token = jwt.sign({ userId: user._id, email: user.email }, JWT_SECRET, { expiresIn: "1h" });
+
+        res.status(200).json({ message: "User logged in successfully", token, user });
     } catch (error) {
-        console.error(error);
+        console.error("Google Login Error:", error);
         res.status(500).json({ message: "Server error" });
     }
 });

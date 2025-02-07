@@ -6,6 +6,7 @@ import Login from "./components/login";
 import Loginemail from "./components/loginemail";
 import Dashboard from "./components/dashboard";
 import Navbar from "./components/navbar";
+import Allposts from "./components/blogs";
 
 const ProtectedRoute = ({ children }) => {
     const token = localStorage.getItem("token");
@@ -23,6 +24,7 @@ export default function App() {
                 <Route path="/email" element={<Email />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/loginemail" element={<Loginemail />} />
+                <Route path="/allposts" element={<Allposts />} />
                 <Route 
                     path="/dashboard" 
                     element={
