@@ -24,7 +24,7 @@ router.post("/register", async (req, res) => {
 
         const newUser = new User({ email, password: hashedPassword });
         await newUser.save();
-        
+
         res.status(201).json({ message: "User registered successfully" });
     } catch (err) {
         console.error(err);
@@ -66,30 +66,17 @@ router.post("/login", async (req, res) => {
 
 
 // **Protected Route**
-router.get("/loginemail", verifyToken, async (req, res) => {
+router.get("/profile", verifyToken, async (req, res) => {
     try {
-      const user = await User.findById(req.user.userId).select("-password"); 
-      res.json(user);
+        const user = await User.findById(req.user.userId).select("-password");
+        res.json(user);
     } catch (error) {
-      res.status(500).json({ error: "Unauthorized" });
+        res.status(500).json({ error: "Unauthorized" });
     }
-  });
-
-  router.get("/user", verifyToken, async(req, res)=>{
-
-    const user = req.user;
-
-    if (!user) {
-        return res.status(404).json({message: "user not found!"});
-    }
+});
 
 
-    res.json(user);
-
-
-  })
-
-  router.post("/google-login", async (req, res) => {
+router.post("/google-login", async (req, res) => {
     try {
         const { email, displayName } = req.body;
 
@@ -119,14 +106,14 @@ router.get("/loginemail", verifyToken, async (req, res) => {
 function verifyToken(req, res, next) {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) return res.status(403).json({ message: "Access Denied" });
-  
+
     try {
-      const decoded = jwt.verify(token, JWT_SECRET);
-      req.user = decoded;
-      next();
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.user = decoded;
+        next();
     } catch (error) {
-      res.status(401).json({ message: "Invalid Token" });
+        res.status(401).json({ message: "Invalid Token" });
     }
-  }
+}
 
 module.exports = router;

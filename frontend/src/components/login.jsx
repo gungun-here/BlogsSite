@@ -1,7 +1,7 @@
 import { FaFacebook } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { signInWithGoogle } from "../firebase";
-
+import axios from "axios";
 export default function Login() {
     const navigate = useNavigate()
 
@@ -11,7 +11,6 @@ export default function Login() {
             console.log("Google User Data:", googleUser); // Debugging
     
             if (googleUser) {
-                alert(`Welcome ${googleUser.displayName}`);
                 
                 const response = await axios.post("http://localhost:4000/api/auth/google-login", {
                     email: googleUser.email,
@@ -19,6 +18,7 @@ export default function Login() {
                 });
     
                 console.log("Server Response:", response.data); // Debugging
+                localStorage.setItem("token", response.data.token)
                 navigate("/dashboard"); // Redirect to dashboard on successful login
             }
         } catch (error) {

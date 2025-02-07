@@ -12,7 +12,6 @@ export default function Signup() {
             console.log("Google User Data:", googleUser); // Debugging
     
             if (googleUser) {
-                alert(`Welcome ${googleUser.displayName}`);
                 
                 const response = await axios.post("http://localhost:4000/api/auth/google-login", {
                     email: googleUser.email,
