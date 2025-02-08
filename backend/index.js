@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const authRoutes = require("./routes/auth"); // Import auth routes
-//const blogRoutes = require('./routes/blogRoutes');
+const blog_router = require('./routes/blogRoutes');
 
 const app = express();
 app.use(express.json());
@@ -12,7 +12,7 @@ app.use(cors());
 // Use the routes
 app.use("/api/auth", authRoutes);
 
-//app.use('/api/blogs', blogRoutes);
+app.use('/api/blogs', blog_router);
 
 
 // mongoose.connect("mongodb://127.0.0.1:27017/users")
