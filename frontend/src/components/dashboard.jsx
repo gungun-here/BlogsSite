@@ -11,28 +11,29 @@ export default function Dashboard() {
     useEffect(() => {
         const fetchUserData = async () => {
             const token = localStorage.getItem("token");
+          
             if (!token) {
                 navigate("/login");
                 return;
             }
 
             try {
-                const res = await axios.get(`${baseURL}/api/auth/google-login`, {  // Fixed API Endpoint
+                const res = await axios.get(`${baseURL}/api/auth/getUserData`, {  // Fixed API Endpoint
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
-                console.log("User Data:", res.data); // Debugging
+                console.log("User Data:", res.data.user); // Debugging
 
-                if (!res.data || !res.data.email) {
+                if (!res.data.user || !res.data.user.email) {
                     throw new Error("Invalid user data");
                 }
 
-                setUser(res.data);
+                setUser(res.data.user);
             } catch (err) {
                 console.error("Error fetching user:", err);
                 setError("Session expired. Please log in again.");
-                localStorage.removeItem("token");
-                navigate("/login");
+                // localStorage.removeItem("token");
+                // navigate("/login");
             }
         };
 

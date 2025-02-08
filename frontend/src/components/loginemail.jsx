@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios"; 
+import baseURL from "./render";
 
 export default function Loginemail() {
     const navigate = useNavigate();
@@ -40,11 +41,13 @@ export default function Loginemail() {
             console.log("Stored User:", localStorage.getItem("user"));
 
             navigate("/dashboard"); // ✅ Redirect on success
-
+            console.log(res)
         } catch (err) {
+           
+            console.log(err)
             console.error("Login Error:", err.response?.data);
             setError(err.response?.data?.message || "An unexpected error occurred. Please try again.");
-        }
+        } 
     };
 
     return (

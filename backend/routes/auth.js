@@ -14,7 +14,11 @@ router.post("/register", async (req, res) => {
         const { email, password } = req.body;
 
         // Check if user already exists
-        const existingUser = await User.findOne({ email });
+        let existingUser;
+const userlist = await User.find();
+        if (userlist.length > 0) {
+            existingUser = await User.findOne({ email });
+        }
         if (existingUser) {
             return res.status(400).json({ message: "User already exists" });
         }
@@ -35,8 +39,12 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await User.findOne({ email });
 
+        const userlist = await User.find();
+        let user;
+        if(userlist.length > 0){
+         user = await User.findOne({ email }) || {};
+        }
         if (!user) {
             return res.status(400).json({ message: "User not found. Please sign up." });
         }
@@ -66,7 +74,7 @@ router.post("/login", async (req, res) => {
 
 
 // **Protected Route**
-router.get("/profile", verifyToken, async (req, res) => {
+router.get("/dashboard", verifyToken, async (req, res) => {
     try {
         const user = await User.findById(req.user.userId).select("-password");
         res.json(user);
@@ -101,6 +109,16 @@ router.post("/google-login", async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 });
+
+router.get("/getUserData",verifyToken, (req, res) => {
+    const user = req.user;
+
+    if(!user){
+        return res.status(404).json({message: "user not found"});
+    }
+
+    return res.status(200).json({ message: 'user found sucessfully', user: user });
+})
 
 // **Middleware to Verify Token**
 function verifyToken(req, res, next) {
