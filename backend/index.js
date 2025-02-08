@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const authRoutes = require("./routes/auth"); // Import auth routes
-const blog_router = require('./routes/blogRoutes');
+const blog_router = require('./routes/blogs');
 
 const app = express();
 app.use(express.json());

@@ -2,6 +2,7 @@ import { FaFacebook } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { signInWithGoogle } from "../firebase";
 import axios from "axios";
+import baseURL from "./render";
 
 export default function Signup() {
     const navigate = useNavigate()
@@ -13,7 +14,7 @@ export default function Signup() {
     
             if (googleUser) {
                 
-                const response = await axios.post("http://localhost:4000/api/auth/google-login", {
+                const response = await axios.post(`${baseURL}/api/auth/google-login`, {
                     email: googleUser.email,
                     displayName: googleUser.displayName,
                 });

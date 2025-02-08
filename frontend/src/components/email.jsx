@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import baseURL from "./render";
 
 export default function Email() {
     const navigate = useNavigate();
