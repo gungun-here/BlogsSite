@@ -4,7 +4,7 @@ import axios from "axios";
 import { FiEdit2 } from "react-icons/fi";
 import baseURL from "./render";
 
-export default function Dashboard() {
+export default function Dashboard2() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [formData, setFormData] = useState({

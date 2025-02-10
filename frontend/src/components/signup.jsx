@@ -49,7 +49,7 @@ export default function Signup() {
                         Sign up with Facebook
                     </button>
                     <div className="flex items-center justify-center">
-                        <img src="img.png" alt="divider" className="h-[2rem] w-[20rem]" />
+                        <img src="img2.png" alt="divider" className="h-[2rem] w-[20rem]" />
                     </div>
                     <button className="border cursor-pointer border-gray-300 text-lg h-[3rem] w-[20rem] hover:bg-gray-50" onClick={()=>navigate("/email")}>
                         Sign up with email
