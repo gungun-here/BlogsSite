@@ -28,7 +28,7 @@ export default function Dashboard() {
         }
 
         const response = await axios.get(`${baseURL}/api/auth/getUserData`, {
-          headers: { Authorization: token },
+          headers: { Authorization: `bearer ${token}` },
         });
 
         setUser(response.data);
@@ -65,6 +65,9 @@ export default function Dashboard() {
       console.error("Profile Update Error:", err);
     }
   };
+
+  console.log(user)
+  console.log(formData)
 
   return (
     <div className="flex flex-col items-center justify-center h-screen relative">

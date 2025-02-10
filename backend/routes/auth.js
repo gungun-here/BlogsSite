@@ -130,14 +130,24 @@ router.post("/google-login", async (req, res) => {
     }
 });
 
-router.get("/getUserData",verifyToken, (req, res) => {
+router.get("/getUserData",verifyToken, async (req, res) => {
     const user = req.user;
-
     if(!user){
         return res.status(404).json({message: "user not found"});
     }
 
-    return res.status(200).json({ message: 'user found sucessfully', user: user });
+    if(!user.email){
+    return res.status(404).json({message: "credentials required!!"})
+    }
+
+    const userdata = await User.find({email: user.email});
+
+    if (!userdata){
+        return res.status(404).json({message: "user not found"})
+    }
+
+
+    return res.status(200).json({ message: 'user found sucessfully', user: userdata });
 })
 
 // **Middleware to Verify Token**
