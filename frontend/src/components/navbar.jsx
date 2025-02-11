@@ -11,7 +11,7 @@ export default function Navbar() {
     const onLink = (path) => (location.pathname === path ? "text-[#bc8f8f]" : "hover:text-[#bc8f8f]");
 
     return (
-        <div className="px-15 sticky top-0 bg-white z-50"> 
+        <div className="px-15"> 
             <div className="px-10 border-b-2 flex justify-between items-center py-4 border-gray-200">
                 <div>
                     <Link to="/" className="text-xl">Out & About</Link>
@@ -22,8 +22,10 @@ export default function Navbar() {
                     {is_authenticated() ? (
                         <div className="flex gap-6 items-center">
                             <Link to="/dashboard" className={`${onLink("/dashboard")} cursor-pointer`}>Dashboard</Link>
+                            <Link to="/addblogs" className={`${onLink("/addblogs")} cursor-pointer`}>Add Blogs</Link>
+                            <Link to="/yourblogs" className={`${onLink("/yourblogs")} cursor-pointer`}>Your Blogs</Link>
                             <Link to="/allposts" className={onLink("/allposts")}>All posts</Link>
-                        <button onClick={logout} className="hover:text-[#bc8f8f] cursor-pointer">Logout</button>   
+                        <button onClick={logout} className="hover:text-[#bc8f8f] cursor-pointer">Logout</button>
                         </div>
                     ) : (
                         <div className="flex gap-6">

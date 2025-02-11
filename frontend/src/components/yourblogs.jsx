@@ -1,39 +1,70 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import baseURL from "./render";
+import { Link } from "react-router-dom";
 
-export default function Yourblogs() {
+export default function YourBlogs() {
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("http://localhost:4000/api/blogs/blogs")
-            .then((res) => res.json())
-            .then((data) => {
-                setBlogs(data);
-                setLoading(false);
-            })
-            .catch((error) => {
+        window.scrollTo(0, 0);
+      }, []); // Runs only once when the component mounts
+
+    useEffect(() => {
+        const fetchBlogs = async () => {
+            const token = localStorage.getItem("token");
+            if (!token) return;
+
+            try {
+                const response = await fetch(`${baseURL}/api/blogs/getBlogs`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                const data = await response.json();
+               
+                if (response.ok) {
+                    setBlogs(data.blogs);
+                }
+            } catch (error) {
                 console.error("Error fetching blogs:", error);
+            } finally {
                 setLoading(false);
-            });
+            }
+        };
+
+        fetchBlogs();
     }, []);
 
     return (
-        <div>
-        {blogs.map((blog, index) => (
-    <div key={index}>
-        <img src={blog.image} alt={blog.title} className="w-full object-cover h-[21rem]" />
-        <div className="p-4">
-            <span className="text-sm text-gray-500">{new Date(blog.date).toDateString()}</span><br />
-            <button className="mt-3 px-3 py-1 bg-blue-100 rounded-md text-sm">
-                {blog.category || "Uncategorized"}
-            </button>
-            <h2 className="text-lg font-semibold mt-2">{blog.title}</h2>
-            <p className="text-gray-600">{blog.content.substring(0, 100)}...</p>
-            <p className="text-sm text-gray-500">⏳ {blog.readingTime} min read</p>
-        </div>
-    </div>
-))}
-
+        <div className="min-h-screen p-10">
+            <h1 className="text-4xl font-bold text-center mb-10 text-[#d25d5d]">Your Blogs</h1>
+            
+            {loading ? (
+                <p className="text-center">Loading...</p>
+            ) : blogs?.length === 0 ? (
+                <p className="text-center">No blogs found. Start Writing!</p>
+            ) : (
+                <div className="grid grid-cols-3 gap-10 container mx-auto py-4 px-10">
+                    {blogs?.slice().reverse().map((blog, idx) => (
+                        <Link to={`/blogdetails/${blog._id}`} key={idx}>
+                        <div key={blog?._id} className="border border-gray-200 h-full">
+                            <img src={blog?.image} alt={blog?.title} className="w-full object-cover mb-4"/>
+                            <div className="px-4 py-8 grid gap-4">
+                                <div className="text-xs">{new Date(blog.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} • {blog.readingTime} min read </div>
+                                <div className="text-sm border-2 border-gray-200 m-auto ml-0 py-[0.2rem] px-[0.4rem] rounded text-center">
+                                    {blog.category}
+                                </div>
+                                <h2 className="text-2xl font-my">{blog.title}</h2>
+                                </div>
+                        </div>
+                        </Link>
+                    ))}
+                </div>
+            )}
         </div>
     );
-}
+} 

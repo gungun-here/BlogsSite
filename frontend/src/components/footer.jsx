@@ -18,7 +18,7 @@ export default function Footer(){
           <label htmlFor="email">Email*</label>
           <input className="border rounded h-[2.5rem] w-[35rem]" type="email" />
           <div className="flex gap-4"><input type="checkbox"/><label htmlFor="checkbox">Yes, subscribe me to your newsletter.</label></div>
-          <button type="submit" className="bg-black text-white h-[3rem] w-[8rem] rounded-lg">Submit</button>
+          <button type="submit" className="bg-black text-white h-[3rem] w-[8rem] cursor-pointer">Submit</button>
         </div>
       </div>
 

@@ -19,6 +19,10 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []); // Runs only once when the component mounts
+
+  useEffect(() => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -31,11 +35,11 @@ export default function Dashboard() {
           headers: { Authorization: `bearer ${token}` },
         });
 
-        setUser(response.data);
+        setUser(response.data.user);
         setFormData({
-          firstName: response.data.firstName || "",
-          lastName: response.data.lastName || "",
-          phnumber: response.data.phnumber || "",
+          firstName: response.data.user.firstName || "",
+          lastName: response.data.user.lastName || "",
+          phnumber: response.data.user.phnumber || "",
         });
       } catch (err) {
         console.error("Profile Fetch Error:", err);
@@ -50,13 +54,12 @@ export default function Dashboard() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
   // Handle profile update
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(`${baseURL}/api/auth/update-profile`, formData, {
-        headers: { Authorization: token },
+        headers: { Authorization: `bearer ${token}` },
       });
 
       setUser(response.data);
@@ -67,75 +70,74 @@ export default function Dashboard() {
   };
 
   console.log(user)
-  console.log(formData)
 
   return (
     <div className="flex flex-col items-center justify-center h-screen relative">
-      <div className="p-10 font-my">
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-2xl h-[40rem] w-[80rem] px-14 py-10 bg-white">
-          <span className="text-5xl">My Profile</span>
+      <div className="p-10">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[40rem] w-[80rem] px-14 py-10">
+          <span className="text-4xl font-bold">My Profile</span>
           <form className="grid grid-cols-2 gap-14 m-10 ml-[20rem]">
             
             {/* First Name */}
-            <div className="flex gap-16 items-center">
-              <label htmlFor="firstName">First Name:</label>
+            <div className="flex gap-17 items-center text-lg">
+              <label htmlFor="firstName" className="text-[#d25d5d]">First Name</label>
               {isEditing.firstName ? (
                 <input
                   type="text"
                   name="firstName"
-                  className="border-2 rounded-md border-gray-200"
+                  className="border-2 relative"
                   value={formData.firstName}
                   onChange={handleChange}
                 />
               ) : (
                 <p>{user?.firstName || "Not Set"}</p>
               )}
-              <button type="button" onClick={() => setIsEditing({ ...isEditing, firstName: true })} className="text-black">
+              <button type="button" onClick={() => setIsEditing({ ...isEditing, firstName: true })} className="text-black cursor-pointer absolute left-[44.5rem]">
               <FiEdit2 />
               </button>
             </div>
 
             {/* Last Name */}
-            <div className="flex gap-8 items-center">
-              <label htmlFor="lastName">Last Name:</label>
+            <div className="flex gap-6 items-center text-lg">
+              <label htmlFor="lastName" className="text-[#d25d5d]">Last Name</label>
               {isEditing.lastName ? (
                 <input
                   type="text"
                   name="lastName"
-                  className="border-2 rounded-md border-gray-200"
+                  className="border-2 relative"
                   value={formData.lastName}
                   onChange={handleChange}
                 />
               ) : (
                 <p>{user?.lastName || "Not Set"}</p>
               )}
-              <button type="button" onClick={() => setIsEditing({ ...isEditing, lastName: true })} className="text-black">
+              <button type="button" onClick={() => setIsEditing({ ...isEditing, lastName: true })} className="text-black cursor-pointer absolute left-[68.5rem]">
               <FiEdit2 />
               </button>
             </div>
 
             {/* Phone Number */}
-            <div className="flex gap-10 items-center">
-              <label htmlFor="phnumber">Phone Number:</label>
+            <div className="flex gap-8 items-center text-lg">
+              <label htmlFor="phnumber" className="text-[#d25d5d]">Phone Number</label>
               {isEditing.phnumber ? (
                 <input
                   type="number"
                   name="phnumber"
-                  className="border-2 rounded-md border-gray-200"
+                  className="border-2 relative"
                   value={formData.phnumber}
                   onChange={handleChange}
                 />
               ) : (
                 <p>{user?.phnumber || "Not Set"}</p>
               )}
-              <button type="button" onClick={() => setIsEditing({ ...isEditing, phnumber: true })} className="text-black">
+              <button type="button" onClick={() => setIsEditing({ ...isEditing, phnumber: true })} className="text-black cursor-pointer absolute left-[44.5rem]">
               <FiEdit2 />
               </button>
             </div>
 
             {/* Email (Read-Only) */}
-            <div className="flex gap-16 items-center">
-              <label htmlFor="email">Email:</label>
+            <div className="flex gap-16 items-center text-lg">
+              <label htmlFor="email" className="text-[#d25d5d]">Email</label>
               <p>{user?.email || "Not Set"}</p>
             </div>
 
@@ -144,7 +146,7 @@ export default function Dashboard() {
               <button
                 type="button"
                 onClick={handleSave}
-                className="bg-gray-200 rounded-md hover:bg-black hover:cursor-pointer text-white p-2 w-[15rem] mx-67"
+                className="bg-gray-200 hover:bg-black hover:cursor-pointer text-white p-2 w-[15rem] mx-67"
               >
                 Save Changes
               </button>
@@ -153,12 +155,7 @@ export default function Dashboard() {
 
           {/* Your Blogs Section */}
           <div className="mt-20">
-            <span className="text-xl ml-80">Your Blogs</span>
-          </div>
-          <div className="group" onClick={() => navigate("/addblogs")}>
-            <div className="ml-80 mt-10 border-2 rounded-md border-dashed border-gray-300 h-[10rem] w-[20rem] text-center flex items-center justify-center group-hover:border-black group-hover:text-black group-hover:cursor-pointer">
-              <button className="text-gray-400 group-hover:text-black cursor-pointer">+ Add Blogs</button>
-            </div>
+            <span className="text-2xl ml-80">Your Blogs</span>
           </div>
         </div>
       </div>

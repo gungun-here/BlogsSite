@@ -1,6 +1,8 @@
 import { GoArrowRight } from "react-icons/go";
+import { useNavigate } from "react-router-dom";
 
 export default function Homepage() {
+  const navigate = useNavigate();
 
   // Move buttonNames outside so it's accessible in Navbar
   const buttonNames = ["Inspiration(8)", "Vacation(6)", "Home(6)", "Travel(6)", "Style(5)", "Wellness(5)", "Health(5)"];
@@ -89,7 +91,7 @@ export default function Homepage() {
       <div className="px-8 border-b-2 border-gray-200">
         <div className="flex justify-between items-center py-8">
           <div className="text-7xl">These are a few of my favorite things.</div>
-          <div className="text-2xl hover:underline cursor-pointer flex gap-2 items-center">Read It All<GoArrowRight /></div>
+          <div className="text-2xl hover:underline cursor-pointer flex gap-2 items-center" onClick={()=>navigate("/allposts")}>Read It All<GoArrowRight /></div>
         </div>
       </div>
 
@@ -139,7 +141,7 @@ export default function Homepage() {
       <div className="my-8 ml-8 flex">
         <div className="bg-yellow-100 w-[30%]">
         <div className="w-[30%]  pt-8 pb-8 pl-8 sticky top-0 h-fit">
-              <div className="pb-4">Read It All</div>
+              <div className="pb-4 hover:underline cursor-pointer" onClick={navigate("/health")}>Read It All</div>
               <div className="text-5xl">Health & <br /> Wellness</div>
         </div>
         </div>

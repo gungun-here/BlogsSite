@@ -5,9 +5,6 @@ const User = require("../models/users_model"); // Import User model
 
 const router = express.Router();
 
-// JWT Secret Key
-const JWT_SECRET = "supersecretkey";
-
 // Register User
 router.post("/register", async (req, res) => {
     try {
@@ -15,7 +12,7 @@ router.post("/register", async (req, res) => {
 
         // Check if user already exists
         let existingUser;
-const userlist = await User.find();
+        const userlist = await User.find();
         if (userlist.length > 0) {
             existingUser = await User.findOne({ email });
         }
@@ -42,8 +39,8 @@ router.post("/login", async (req, res) => {
 
         const userlist = await User.find();
         let user;
-        if(userlist.length > 0){
-         user = await User.findOne({ email }) || {};
+        if (userlist.length > 0) {
+            user = await User.findOne({ email }) || {};
         }
         if (!user) {
             return res.status(400).json({ message: "User not found. Please sign up." });
@@ -51,7 +48,7 @@ router.post("/login", async (req, res) => {
 
         // Prevent password check for Google users
         if (!user.password) {
-            return res.status(400).json({ message: "This account was created using Google. Please log in with Google." });
+            return res.status(400).json({ message: "This account does not exist." });
         }
 
         // Compare hashed passwords
@@ -61,7 +58,7 @@ router.post("/login", async (req, res) => {
         }
 
         // Generate JWT Token
-        const token = jwt.sign({ userId: user._id, email: user.email }, JWT_SECRET);
+        const token = jwt.sign({ userId: user._id, email: user.email }, process.env.JWT_SECRET);
 
 
         res.status(200).json({ message: "User logged in successfully", token, user: { email: user.email } });
@@ -74,23 +71,22 @@ router.post("/login", async (req, res) => {
 
 router.post("/update-profile", verifyToken, async (req, res) => {
     try {
-      const { firstName, lastName, phnumber } = req.body;
-  
-      // Update user details (except email)
-      const updatedUser = await User.findByIdAndUpdate(
-        req.user.id,
-        { firstName, lastName, phnumber },
-        { new: true, runValidators: true }
-      );
-  
-      if (!updatedUser) return res.status(404).json({ message: "User not found" });
-  
-      res.json(updatedUser);
+        const { firstName, lastName, phnumber } = req.body;
+        // Update user details (except email)
+        const updatedUser = await User.findByIdAndUpdate(
+            { _id: req.user.userId },
+            { firstName: firstName, lastName: lastName, phnumber: phnumber },
+            { new: true, runValidators: true }
+        );
+        console.log("updated user", updatedUser);
+        if (!updatedUser) return res.status(404).json({ message: "User not found" });
+
+        res.json(updatedUser);
     } catch (error) {
-      console.error("Profile Update Error:", error);
-      res.status(500).json({ message: "Server error" });
+        console.error("Profile Update Error:", error);
+        res.status(500).json({ message: "Server error" });
     }
-  });  
+});
 
 
 // **Protected Route**
@@ -121,7 +117,7 @@ router.post("/google-login", async (req, res) => {
         }
 
         // Generate JWT Token
-        const token = jwt.sign({ userId: user._id, email: user.email }, JWT_SECRET);
+        const token = jwt.sign({ userId: user._id, email: user.email }, process.env.JWT_SECRET);
 
         res.status(200).json({ message: "User logged in successfully", token, user });
     } catch (error) {
@@ -130,20 +126,20 @@ router.post("/google-login", async (req, res) => {
     }
 });
 
-router.get("/getUserData",verifyToken, async (req, res) => {
+router.get("/getUserData", verifyToken, async (req, res) => {
     const user = req.user;
-    if(!user){
-        return res.status(404).json({message: "user not found"});
+    if (!user) {
+        return res.status(404).json({ message: "user not found" });
     }
 
-    if(!user.email){
-    return res.status(404).json({message: "credentials required!!"})
+    if (!user.email) {
+        return res.status(404).json({ message: "credentials required!!" })
     }
 
-    const userdata = await User.find({email: user.email});
+    const userdata = await User.findOne({ email: user.email });
 
-    if (!userdata){
-        return res.status(404).json({message: "user not found"})
+    if (!userdata) {
+        return res.status(404).json({ message: "user not found" })
     }
 
 
@@ -156,7 +152,7 @@ function verifyToken(req, res, next) {
     if (!token) return res.status(403).json({ message: "Access Denied" });
 
     try {
-        const decoded = jwt.verify(token, JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
         next();
     } catch (error) {
