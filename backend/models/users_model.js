@@ -1,4 +1,3 @@
-const { type } = require("@testing-library/user-event/dist/type");
 const mongoose = require("mongoose"); 
 
 const usersSchema = new mongoose.Schema({
