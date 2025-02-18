@@ -22,15 +22,15 @@ export default function Navbar() {
                     {is_authenticated() ? (
                         <div className="flex gap-6 items-center">
                             <Link to="/dashboard" className={`${onLink("/dashboard")} cursor-pointer`}>Dashboard</Link>
-                            <Link to="/addblogs" className={`${onLink("/addblogs")} cursor-pointer`}>Add Blogs</Link>
                             <Link to="/yourblogs" className={`${onLink("/yourblogs")} cursor-pointer`}>Your Blogs</Link>
-                            <Link to="/allposts" className={onLink("/allposts")}>All posts</Link>
+                            <Link to="/addblogs" className={`${onLink("/addblogs")} cursor-pointer`}>Add Blogs</Link>
+                            <Link to="/category/allposts" className={onLink("/category/allposts")}>All posts</Link>
                         <button onClick={logout} className="hover:text-[#bc8f8f] cursor-pointer">Logout</button>
                         </div>
                     ) : (
                         <div className="flex gap-6">
                             <Link to="/login" className={onLink("/login")}>Login</Link>
-                            <Link to="/allposts" className={onLink("/allposts")}>All posts</Link>
+                            <Link to="/allposts" className={onLink("/category/allposts")}>All posts</Link>
                         </div>
                     )}
 

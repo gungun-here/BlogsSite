@@ -2,8 +2,9 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/users_model"); // Import User model
-
 const router = express.Router();
+const dotenv = require("dotenv");
+dotenv.config();
 
 // Register User
 router.post("/register", async (req, res) => {
@@ -71,11 +72,11 @@ router.post("/login", async (req, res) => {
 
 router.post("/update-profile", verifyToken, async (req, res) => {
     try {
-        const { firstName, lastName, phnumber } = req.body;
+        const { firstName, lastName, phnumber, profilepic, about } = req.body;
         // Update user details (except email)
         const updatedUser = await User.findByIdAndUpdate(
             { _id: req.user.userId },
-            { firstName: firstName, lastName: lastName, phnumber: phnumber },
+            { firstName: firstName, lastName: lastName, phnumber: phnumber, profilepic: profilepic, about: about },
             { new: true, runValidators: true }
         );
         console.log("updated user", updatedUser);

@@ -1,6 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import baseURL from "./render";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { IoMdSettings } from "react-icons/io";
+import { IoCloseSharp } from "react-icons/io5";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import TextEditor from "./TextEditor";
+
+AOS.init(); // Initialize AOS
 
 export default function Addblogs() {
     const navigate = useNavigate();
@@ -15,6 +24,46 @@ export default function Addblogs() {
     const [loading, setLoading] = useState(false);
     const [authorName, setAuthorName] = useState("Fetching...");
     const [userId, setUserId] = useState(""); // ✅ Store logged-in user's ID
+    const [open, setOpen] = useState(true)
+
+    const quillModules = {
+        toolbar: {
+            container: [
+                [{ font: [] }, { size: [] }], // Font and Size
+                [{ header: [1, 2, 3, 4, 5, 6, true] }], // Headings
+                ["bold", "italic", "underline", "strike"], // Text styles
+                [{ color: [] }, { background: [] }], // Text color and background color
+                [{ script: "sub" }, { script: "super" }], // Subscript/Superscript
+                [{ list: "ordered" }, { list: "bullet" }], // Lists
+                [{ indent: "-1" }, { indent: "+1" }], // Indentation
+                [{ align: [] }], // Text alignment
+                ["blockquote", "code-block"], // Blockquote and Code Block
+                ["video"], // Media Embeds
+                ["clean"], // Remove Formatting
+            ],
+           
+        },
+    };
+    
+
+    const quillFormats = [
+        "font",
+        "size",
+        "header",
+        "bold",
+        "italic",
+        "underline",
+        "strike",
+        "color",
+        "background",
+        "script",
+        "list",
+        "indent",
+        "align",
+        "blockquote",
+        "code-block",
+        "video",
+    ];
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -70,6 +119,10 @@ export default function Addblogs() {
 
         fetchUserDetails();
     }, []);
+
+    const handleQuillContent = (value) => {
+        setContent(value)
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -128,39 +181,46 @@ export default function Addblogs() {
 
     return (
         <div className="min-h-screen flex flex-col justify-between">
-            <div className="flex-grow flex items-center justify-center py-20">
-                <div className="w-[60rem] h-[75rem] px-14 py-10">
+            <div className="flex-grow flex items-center justify-center py-8">
+                <div className="w-[60rem] h-[75rem] px-14 py-4">
                     <h1 className="text-4xl font-bold text-center">Add Your Blog Here</h1>
                 </div>
-                <div className="absolute top-80 left-90">
-                    <form onSubmit={handleSubmit} className="grid gap-8">
-                        
-                            <div className="flex gap-14">
-                                <label htmlFor="title" className="text-xl text-[#d25d5d]">Blog Title</label>
+                <div className="absolute top-53 left-0">
+                    <form onSubmit={handleSubmit}>
+                    <div className="flex">
+                        <div className="text-[#d25d5d] text-5xl pt-4 px-4 cursor-pointer" onClick={() => setOpen(!open)}>
+                        <IoMdSettings />
+                        </div>
+                    <div className={`transition-all duration-300 ease-in-out fiexd w-[30rem] h-[39.6rem] mt-[6.5rem] border-1 border-gray-300 px-13 pt-4 relative ${open ? "" : "hidden"}`}>
+                        <div className="absolute text-3xl left-[26rem] text-[#d25d5d] cursor-pointer" onClick={()=>setOpen(!open)}><IoCloseSharp /></div>
+                        <div className="grid gap-8 h-[30rem] my-[4rem]">
+                            <div className="flex gap-[6.3rem] items-center">
+                                <label htmlFor="title" className="text-xl font-semibold">Title</label>
                                 <input
                                     type="text"
-                                    className="border-2"
+                                    placeholder="Enter Title..."
+                                    className="rounded-lg h-[2.5rem] w-[14rem] bg-white border-1 border-gray-300 pl-2"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                     required
                                 />
                             </div>{/* ✅ Display Correct Author Name */}
-                            <div className="flex gap-19">
-                                <label htmlFor="author" className="text-xl text-[#d25d5d]">Author</label>
+                            <div className="flex gap-20 items-center">
+                                <label htmlFor="author" className="text-xl font-semibold">Author</label>
                                 <input
                                     type="text"
-                                    className="border-2 cursor-not-allowed"
+                                    className="rounded-lg cursor-not-allowed h-[2.5rem] w-[14rem] bg-white border-1 border-gray-300 pl-2"
                                     value={authorName}
                                     readOnly
                                 />
                             </div>
 
-                            <div className="flex gap-[2.5rem]">
-                                <label htmlFor="image" className="text-xl text-[#d25d5d]">Blog Image</label>
+                            <div className="flex gap-[4.79rem] items-center">
+                                <label htmlFor="image" className="text-xl font-semibold">Banner</label>
                                 <input
                                     type="text"
-                                    placeholder="Enter URL..."
-                                    className="border-2"
+                                    placeholder="Paste URL..."
+                                    className="rounded-lg h-[2.5rem] w-[14rem] bg-white border-1 border-gray-300 pl-2"
                                     value={image}
                                     onChange={(e) => setImage(e.target.value)}
                                     required
@@ -168,12 +228,12 @@ export default function Addblogs() {
                             </div>
 
 
-                            <div className="flex gap-[0.9rem]">
-                                <label htmlFor="category" className="text-xl text-[#d25d5d]">Blog Category</label>
+                            <div className="flex gap-[3.6rem] items-center">
+                                <label htmlFor="category" className="text-xl font-semibold">Category</label>
                                 <select
                                     id="category"
                                     name="category"
-                                    className="border-2 w-46"
+                                    className="rounded-lg h-[2.5rem] w-[14rem] bg-white border-1 border-gray-300 pl-2"
                                     value={category}
                                     onChange={(e) => setCategory(e.target.value)}
                                     required
@@ -191,47 +251,58 @@ export default function Addblogs() {
                             </div>
                         
                             {/* Display current date (Read-only) */}
-                            <div className="flex gap-24">
-                                <label htmlFor="date" className="text-xl text-[#d25d5d]">Date</label>
+                            <div className="flex gap-25 items-center">
+                                <label htmlFor="date" className="text-xl font-semibold">Date</label>
                                 <input
                                     type="text"
-                                    className="border-2 cursor-not-allowed"
+                                    className="rounded-lg cursor-not-allowed h-[2.5rem] w-[14rem] bg-white border-1 border-gray-300 pl-2"
                                     value={currentDate}
                                     readOnly
                                 />
                             </div>
 
-                            <div className="flex gap-5">
-                                <label htmlFor="readingTime" className="text-xl text-[#d25d5d]">Reading Time</label>
+                            <div className="flex gap-4 items-center">
+                                <label htmlFor="readingTime" className="text-xl font-semibold">Reading Time</label>
                                 <input
                                     type="number"
-                                    className="border-2"
+                                    className="h-[2.5rem] w-[14rem] bg-white rounded-lg border-1 border-gray-300 pl-2"
                                     placeholder="In minutes..."
                                     value={readingTime}
                                     onChange={(e) => setReadingTime(e.target.value)}
                                     required
                                 />
                             </div>
-                        
-                        <div className="grid gap-8">
-                            <label htmlFor="content" className="text-xl text-[#d25d5d]">Content</label>
-                            <textarea
-                                name="content"
-                                placeholder="Start typing your blog content here..."
-                                className="border-2 w-[50rem] h-[40rem]"
-                                value={content}
-                                onChange={(e) => setContent(e.target.value)}
-                                required
-                            ></textarea>
                         </div>
+                    </div>
+                    
+                    <div>
+                        {/* data-aos="fade-down" */}
+                        <div className="grid gap-8">
+                            <label htmlFor="content" className={`transition-all duration-300 ease-in-out text-7xl font-bold text-[#d25d5d] ${open ? "ml-[3rem]" : "mx-[2rem]"}`}>Content</label>
+                             {/* <ReactQuill 
+                                           value={content} 
+                                           onChange={handleQuillContent} 
+                                           modules={quillModules}
+                                           formats={quillFormats}
+                                           className={`transition-all duration-300 ease-in-out h-[35rem] ${open ? "w-[55rem]" : "w-[85rem]"}`}
+                                       /> */}
+<TextEditor placeholder={"text editor"} width={open? 880: 1356} value={content} onChangeHandler={handleQuillContent}/>
 
+                        </div>                  
+                         
+                    </div>
+                    </div>
+
+                    <div>
                         <button
                             type="submit"
-                            className={`bg-gray-200 hover:bg-black hover:cursor-pointer text-white p-2 w-[15rem] mx-67 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                            className={`bg-gray-200 mt-20 hover:bg-black hover:cursor-pointer text-white p-2 w-[15rem] mx-[39.9rem] rounded-lg ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                             disabled={loading}
                         >
                             {loading ? "Publishing..." : "Publish"}
                         </button>
+                    </div>
+                   
                     </form>
                 </div>
             </div>

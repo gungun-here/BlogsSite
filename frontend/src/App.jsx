@@ -11,8 +11,9 @@ import Footer from "./components/footer";
 import Addblogs from "./components/addblogs";
 import YourBlogs from "./components/yourblogs";
 import Dashboard from "./components/dashboard";
-import Allposts from "./components/allposts";
 import Blogdetails from "./components/blogdetails";
+import Filter from "./components/filter";
+import Authorprofile from "./components/authorprofile";
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -33,7 +34,8 @@ function Hidenav(){
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/loginemail" element={<Loginemail />}></Route>
         <Route path="/email" element={<Email />}></Route>
-        <Route path="/allposts" element={<Allposts />}></Route>
+        <Route path="/author/:userId" element={<Authorprofile />} />
+        <Route path="/category/:category" element={<Filter />} />
         <Route path="/blogdetails/:id" element={<Blogdetails />}></Route>
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
         <Route path="/addblogs" element={<ProtectedRoute><Addblogs /></ProtectedRoute>}/>
@@ -47,8 +49,10 @@ function Hidenav(){
 export default function App() {
 
   return(
-    <Router>
-      <Hidenav />
-    </Router>
+    <>
+      <Router>
+        <Hidenav />
+      </Router>
+    </>
   )
 }

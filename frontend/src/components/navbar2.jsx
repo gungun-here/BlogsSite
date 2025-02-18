@@ -1,24 +1,50 @@
-import { Link } from "react-router-dom"
-import { useLocation } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom";
+import { useBlog } from "./blogCategory.jsx";
 
-export default function Navbar2(){
-    const location = useLocation()
+export default function Navbar2({ blogCounts, allBlogCount }) {
+  const location = useLocation();
+  const onLink = (path) =>
+    location.pathname.includes(path)
+      ? "text-[#bc8f8f]"
+      : "hover:text-[#bc8f8f]";
 
-    const onLink = (path) => (location.pathname === path ? "text-[#bc8f8f]" : "hover:text-[#bc8f8f]");
+  const { toggleCategory } = useBlog();
+  
+  const navLinks = [
+    "All posts",
+    "Health & Wellness",
+    "Fashion & Beauty",
+    "Travel",
+    "Home & Decor",
+    "Entertainment",
+    "Information Technology",
+    "Random",
+    "Others",
+  ];
 
-    return(
-        <div className="px-14">
-            <div className="flex gap-8 justify-center items-center border-b-2 border-gray-200 py-4">
-            <Link to="/allposts" className={`${onLink("/allposts")}`}>All</Link>
-            <Link to="/health" className={`${onLink("/health")}`}>Health & Wellness</Link>
-            <Link to="/fashion" className={`${onLink("/fashion")}`}>Fashion & Beauty</Link>
-            <Link to="/travel" className={`${onLink("/travel")}`}>Travel</Link>
-            <Link to="/home" className={`${onLink("/home")}`}>Home & Decor</Link>
-            <Link to="/ent" className={`${onLink("/ent")}`}>Entertainment</Link>
-            <Link to="/it" className={`${onLink("/it")}`}>Information Technology</Link>
-            <Link to="/random" className={`${onLink("/random")}`}>Random</Link>
-            <Link to="/others" className={`${onLink("/others")}`}>Others</Link>
-            </div>
-        </div>
-    )
+
+
+  return (
+    <div className="px-14">
+      <div className="flex gap-8 justify-center items-center border-b-2 border-gray-200 py-4">
+        {navLinks.map((link, index) => 
+        
+        (
+          <Link
+            key={index}
+            to={`/category/${link}`}
+            className={`${onLink(`/category/${link}`)}`}
+            onClick={() => toggleCategory(link)}
+          >
+           
+            {link} (
+            {link === "All posts"
+              ? allBlogCount
+              : blogCounts?.[link] || 0}
+            )
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
 }
