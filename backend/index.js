@@ -7,7 +7,10 @@ const blog_router = require('./routes/blogs');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: "https://blogs-site-j3dwfyq6r-gunguns-projects-e84f830f.vercel.app/",
+    credentials: true
+}));
 
 // Use the routes
 app.use("/api/auth", authRoutes);
