@@ -77,6 +77,7 @@ export default function Blogdetails() {
       setHasLiked(!hasLiked); // Toggle like status
     } catch (error) {
       console.error("Error liking blog:", error);
+      
     }
   };
 
