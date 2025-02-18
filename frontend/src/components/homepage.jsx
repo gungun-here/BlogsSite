@@ -21,7 +21,7 @@ export default function Homepage() {
       const {data: res} =  await axios.get(`${baseURL}/api/blogs/category/Health & Wellness`)
       
       if(res.success === true){
-        setHealthBlogs(res.blogs.reverse().slice(0, 4))
+        setHealthBlogs(res.sortedBlogs.reverse().slice(0, 4))
       }
     }catch(err){
       console.error("Error fetching health blogs:", error);
@@ -32,7 +32,7 @@ export default function Homepage() {
       const {data: res} =  await axios.get(`${baseURL}/api/blogs/category/Fashion & Beauty`)
       
       if(res.success === true){
-        setFashionBlogs(res.blogs.reverse().slice(0, 4))
+        setFashionBlogs(res.sortedBlogs.reverse().slice(0, 4))
       }
     }catch(err){
       console.error("Error fetching health blogs:", error);
@@ -43,7 +43,7 @@ export default function Homepage() {
       const {data: res} =  await axios.get(`${baseURL}/api/blogs/category/Travel`)
       
       if(res.success === true){
-        setTravelBlogs(res.blogs.reverse().slice(0, 4))
+        setTravelBlogs(res.sortedBlogs.reverse().slice(0, 4))
       }
     }catch(err){
       console.error("Error fetching health blogs:", error);
@@ -84,43 +84,43 @@ export default function Homepage() {
     fetchBlogs();
 }, []);
 
-useEffect(() => {
-  const fetchLatestBlog = async () => {
-      try {
-          const { data } = await axios.get(`${baseURL}/api/blogs/getBlogs`);
+// useEffect(() => {
+//   const fetchLatestBlog = async () => {
+//       try {
+//           const { data } = await axios.get(`${baseURL}/api/blogs/getBlogs`);
           
-          if (data.success) {
-              const sortedBlogs = data.blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
-              setLatestBlog(sortedBlogs[0]); // Get the newest blog
-          }
-      } catch (error) {
-          console.error("Error fetching latest blog:", error);
-      }
-  };
+//           if (data.success) {
+//               const sortedBlogs = data.blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+//               setLatestBlog(sortedBlogs[0]); // Get the newest blog
+//           }
+//       } catch (error) {
+//           console.error("Error fetching latest blog:", error);
+//       }
+//   };
 
-  fetchLatestBlog();
-}, []);
+//   fetchLatestBlog();
+// }, []);
 
-useEffect(() => {
-    const fetchLatestBlog = async () => {
-        try {
-            const response = await axios.get(`${baseURL}/api/blogs/getBlogs`);
-            if (response.data.success && response.data.blogs.length > 0) {
-                console.log("Fetched Blogs:", response.data.blogs); // Debugging
+// useEffect(() => {
+//     const fetchLatestBlog = async () => {
+//         try {
+//             const response = await axios.get(`${baseURL}/api/blogs/getBlogs`);
+//             if (response.data.success && response.data.blogs.length > 0) {
+//                 console.log("Fetched Blogs:", response.data.blogs); // Debugging
 
-                // Sort blogs by date (newest first)
-                const sortedBlogs = response.data.blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
-                setLatestBlog(sortedBlogs[0]); // Store the latest blog
+//                 // Sort blogs by date (newest first)
+//                 const sortedBlogs = response.data.blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+//                 setLatestBlog(sortedBlogs[0]); // Store the latest blog
 
-                console.log("Latest Blog:", sortedBlogs[0]); // Debugging
-            }
-        } catch (error) {
-            console.error("Error fetching latest blog:", error);
-        }
-    };
+//                 console.log("Latest Blog:", sortedBlogs[0]); // Debugging
+//             }
+//         } catch (error) {
+//             console.error("Error fetching latest blog:", error);
+//         }
+//     };
 
-    fetchLatestBlog();
-}, []); 
+//     fetchLatestBlog();
+// }, []); 
 
 
   return (

@@ -30,7 +30,7 @@ export default function Navbar() {
                     ) : (
                         <div className="flex gap-6">
                             <Link to="/login" className={onLink("/login")}>Login</Link>
-                            <Link to="/allposts" className={onLink("/category/allposts")}>All posts</Link>
+                            <Link to="/category/allposts" className={onLink("/category/allposts")}>All posts</Link>
                         </div>
                     )}
 

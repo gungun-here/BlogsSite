@@ -4,9 +4,10 @@ import axios from "axios";
 import baseURL from "./render";
 
 export default function Authorprofile() {
-  const { userId } = useParams(); // Get user ID from the URL
+  const { userId } = useParams(); 
   const [author, setAuthor] = useState(null);
   const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -18,12 +19,14 @@ export default function Authorprofile() {
         setAuthor(response.data.user);
       } catch (err) {
         console.error("Profile Fetch Error:", err);
-        navigate("/"); // Redirect if profile not found
+        navigate("/"); 
       }
     };
 
     fetchProfile();
   }, [userId, navigate]);
+
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
@@ -31,7 +34,7 @@ export default function Authorprofile() {
         {author ? (
           <>
             <img
-              src={author.profilepic || "default-image.jpg"}
+              src={author.profilepic || "No image."}
               alt="Author Profile"
               className="w-32 h-32 rounded-full border-2 border-gray-300 object-cover"
             />

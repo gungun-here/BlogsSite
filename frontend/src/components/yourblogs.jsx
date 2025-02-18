@@ -92,7 +92,7 @@ export default function YourBlogs() {
                             <img src={blog?.image} alt={blog?.title} className="w-full object-cover mb-4"/>
                             <div className="px-4 py-8 grid gap-4 relative">
                                 { hoverBlog === blog._id && (
-                                    <MdDelete className="text-2xl absolute top-[1.5rem] left-[24rem]" onClick={(event) => handleDelete(event, blog._id)} />)
+                                    <MdDelete className="text-2xl absolute top-[1.5rem] left-[24rem] hover:text-red-500" onClick={(event) => handleDelete(event, blog._id)} />)
                                 }
                                 <div className="text-xs">{new Date(blog.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} • {blog.readingTime} min read </div>
                                 <div className="text-sm border-2 border-gray-200 m-auto ml-0 py-[0.2rem] px-[0.4rem] rounded text-center">

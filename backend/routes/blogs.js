@@ -50,7 +50,7 @@ blog_router.get("/:id", async (req, resp) => {
     success: true,
     blog: {
       ...blog?._doc,
-      author: `${authorData.firstName} ${authorData.lastName}`,
+      authorName: `${authorData.firstName} ${authorData.lastName}`,
     },
   });
 });
@@ -149,7 +149,6 @@ blog_router.post("/add", verifyToken, async (req, res) => {
   }
 
   try {
-    console.log("Author is: ", req.user.userId);
 
     const newBlog = await Blog.create({
       title,
@@ -234,6 +233,5 @@ blog_router.delete("/:blogId/comments/:commentId", verifyToken, async (req, res)
     res.status(500).json({ message: "Server error", error });
   }
 });
-
 
 module.exports = blog_router;

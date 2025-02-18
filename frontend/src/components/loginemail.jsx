@@ -27,7 +27,6 @@ export default function Loginemail() {
 
             const authToken = res?.data?.token; // ✅ Fixed token key
             if (authToken) {
-                console.log("Token is available:", authToken);
                 localStorage.setItem("token", authToken);
             } else {
                 console.error("No token received from server!");

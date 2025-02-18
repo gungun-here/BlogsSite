@@ -157,8 +157,8 @@ export default function Dashboard() {
                       className="w-[13.5rem] h-[100%] rounded-full border-2 border-gray-300 object-cover"
                     />
                   ) : (
-                    <div className="w-32 h-32 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                      <p className="text-gray-500">No Image</p>
+                    <div className="w-[13rem] h-[13rem] rounded-full border-2 border-gray-300 flex items-center justify-center">
+                      <p className="text-gray-500">No image</p>
                     </div>
                   )}
 
@@ -309,7 +309,7 @@ export default function Dashboard() {
                       <label htmlFor="email" className="text-[#d25d5d]">
                         Email
                       </label>
-                      <div className="border-2 w-[13rem] pl-1 cursor-not-allowed">
+                      <div className="border-2 w-[13rem] pl-1 cursor-not-allowed overflow-hidden">
                         <p>{user?.email || "Not Set"}</p>
                       </div>
                     </div>
@@ -394,7 +394,7 @@ export default function Dashboard() {
                         <div className="px-4 py-8 grid gap-4 relative">
                           {hoverBlog === blog._id && (
                             <MdDelete
-                              className="text-2xl absolute top-[1.5rem] left-[20.5rem]"
+                              className="text-2xl absolute top-[1.5rem] left-[20.5rem] hover:text-red-500"
                               onClick={(event) => handleDelete(event, blog._id)}
                             />
                           )}

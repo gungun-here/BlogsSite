@@ -62,7 +62,7 @@ router.post("/login", async (req, res) => {
         const token = jwt.sign({ userId: user._id, email: user.email }, process.env.JWT_SECRET);
 
 
-        res.status(200).json({ message: "User logged in successfully", token, user: { email: user.email } });
+        res.status(200).json({ message: "User logged in successfully", token, user: { email: user.email, userId: user._id } });
 
     } catch (error) {
         console.error("Login Error:", error);
@@ -120,7 +120,7 @@ router.post("/google-login", async (req, res) => {
         // Generate JWT Token
         const token = jwt.sign({ userId: user._id, email: user.email }, process.env.JWT_SECRET);
 
-        res.status(200).json({ message: "User logged in successfully", token, user });
+        res.status(200).json({ message: "User logged in successfully", token, user: { email: user.email, userId: user._id } });
     } catch (error) {
         console.error("Google Login Error:", error);
         res.status(500).json({ message: "Server error" });
@@ -146,6 +146,18 @@ router.get("/getUserData", verifyToken, async (req, res) => {
 
     return res.status(200).json({ message: 'user found sucessfully', user: userdata });
 })
+
+router.get("/user/:userId", async (req, res) => {
+    try {
+      const user = await User.findById(req.params.userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json({ user });
+    } catch (err) {
+      res.status(500).json({ message: "Server error" });
+    }
+  });
 
 // **Middleware to Verify Token**
 function verifyToken(req, res, next) {

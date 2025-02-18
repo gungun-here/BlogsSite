@@ -20,7 +20,8 @@ export default function Login() {
                 });
     
                 console.log("Server Response:", response.data); // Debugging
-                localStorage.setItem("token", response.data.token)
+                localStorage.setItem("token", response?.data?.token)
+                localStorage.setItem("user", JSON.stringify(response?.data?.user));
                 navigate("/dashboard"); // Redirect to dashboard on successful login
             }
         } catch (error) {

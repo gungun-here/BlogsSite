@@ -36,6 +36,7 @@ function Hidenav(){
         <Route path="/email" element={<Email />}></Route>
         <Route path="/author/:userId" element={<Authorprofile />} />
         <Route path="/category/:category" element={<Filter />} />
+        <Route path="/authorprofile/:userId" element={<Authorprofile />} />
         <Route path="/blogdetails/:id" element={<Blogdetails />}></Route>
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
         <Route path="/addblogs" element={<ProtectedRoute><Addblogs /></ProtectedRoute>}/>
