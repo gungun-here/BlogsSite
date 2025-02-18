@@ -15,7 +15,6 @@ import {
     WhatsappShareButton,
     TumblrShareButton,
     RedditShareButton,
-    EmailShareButton,
     FacebookIcon,
     TwitterIcon,
     LinkedinIcon,
@@ -77,7 +76,7 @@ export default function Blogdetails() {
       setHasLiked(!hasLiked); // Toggle like status
     } catch (error) {
       console.error("Error liking blog:", error);
-      
+
     }
   };
 
@@ -135,6 +134,9 @@ export default function Blogdetails() {
     return <div>Loading...</div>;
   }
 
+
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(blogUrl)}`;
+
  
 
   return (
@@ -189,9 +191,10 @@ export default function Blogdetails() {
                 <PinterestShareButton url={blogUrl} media={blog.image}>
                   <PinterestIcon size={32} round />
                 </PinterestShareButton>
-                <WhatsappShareButton url={blogUrl}>
+                <a href={whatsappUrl}>
                   <WhatsappIcon size={32} round />
-                </WhatsappShareButton>
+                </a>
+                
                 <TumblrShareButton url={blogUrl}>
                   <TumblrIcon size={32} round />
                 </TumblrShareButton>
