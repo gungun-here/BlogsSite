@@ -234,4 +234,14 @@ blog_router.delete("/:blogId/comments/:commentId", verifyToken, async (req, res)
   }
 });
 
+blog_router.get("/user/:userId", async (req, res) => {
+  try {
+      const { userId } = req.params;
+      const blogs = await Blog.find({ author: userId }).sort({ createdAt: -1 });
+      res.status(200).json({ blogs });
+  } catch (error) {
+      res.status(500).json({ message: "Error fetching blogs", error });
+  }
+});
+
 module.exports = blog_router;
